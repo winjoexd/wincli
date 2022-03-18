@@ -17,13 +17,15 @@ fn main() -> std::io::Result<()> {
    
     println!("pattern = {}", args.pattern);
     println!("path = {:?}", args.path);
+    println!("===========================");
 
     let f = File::open(&args.path)?;
     let mut reader = BufReader::new(f);
     
     for line in reader.lines() {
-        if line.as_ref().unwrap().contains(&args.pattern) {
-            println!("{:?}", line);
+        let l = line.as_ref().unwrap();
+        if l.contains(&args.pattern) {
+            println!("{}", l);
         }
     }
 
