@@ -5,6 +5,7 @@ use std::io::prelude::*;
 use std::io::BufReader;
 use std::fs::File;
 use indicatif::ProgressBar;
+use std::{thread, time};
 
 #[derive(Parser)]
 struct Cli {
@@ -24,6 +25,7 @@ fn main() -> std::io::Result<()> {
 
     let pb = indicatif::ProgressBar::new(100);
     for i in 0..100 {
+        thread::sleep(time::Duration::from_millis(50));
         pb.inc(1);
     }
     pb.finish();
