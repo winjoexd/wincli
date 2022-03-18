@@ -4,7 +4,6 @@ use clap::Parser;
 use std::io::prelude::*;
 use std::io::BufReader;
 use std::fs::File;
-use std::io::{Error, ErrorKind};
 
 #[derive(Parser)]
 struct Cli {
@@ -20,15 +19,8 @@ fn main() -> std::io::Result<()> {
     println!("path = {:?}", args.path);
     println!("===========================");
 
-    let f = File::open(&args.path);
-    match f{
-        Err(error) => {
-            return Err(Error::from(ErrorKind::NotFound));
-        }
-        _ => {}
-    }
-
-    let mut reader = BufReader::new(f.unwrap());
+    let f = File::open(&args.path)?;
+    let mut reader = BufReader::new(f);
     
     for line in reader.lines() {
         let l = line.as_ref().unwrap();
