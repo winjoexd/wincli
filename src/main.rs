@@ -20,7 +20,7 @@ fn main() -> std::io::Result<()> {
     println!("===========================");
 
     let f = File::open(&args.path)?;
-    let mut reader = BufReader::new(f);
+    let reader = BufReader::new(f);
     
     for line in reader.lines() {
         let l = line.as_ref().unwrap();
