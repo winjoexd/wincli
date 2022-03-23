@@ -8,3 +8,6 @@ edition = "2021"
 [dependencies]
 clap = { version = "3.1.6", features = ["derive"] }
 indicatif = {version = "*", features = ["rayon"]}
+clap-verbosity-flag = "1.0.0"
+log = "0.4.0"
+env_logger = "0.8.4"

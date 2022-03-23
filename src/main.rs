@@ -6,19 +6,33 @@ use std::io::BufReader;
 use std::fs::File;
 use indicatif::ProgressBar;
 use std::{thread, time};
+use log::{info, warn, debug};
 
-#[derive(Parser)]
+#[derive(Debug, Parser)]
 struct Cli {
     pattern: String,
     #[clap(parse(from_os_str))]
     path: std::path::PathBuf,
+    #[clap(flatten)]
+    verbose: clap_verbosity_flag::Verbosity,
+}
+
+fn find_matches(mut reader: BufReader<File>, pattern: &str, mut writer: impl std::io::Write) {
+    for line in reader.lines() {
+        let l = line.as_ref().unwrap();
+        if l.contains(&pattern) {
+            writeln!(writer, "{}", l);
+        }
+    }
 }
 
 fn main() -> std::io::Result<()> {
+    env_logger::init();
+
     let args = Cli::parse();
    
-    println!("pattern = {}", args.pattern);
-    println!("path = {:?}", args.path);
+    info!("pattern = {}", args.pattern);
+    info!("path = {:?}", args.path);
 
     let f = File::open(&args.path)?;
     let reader = BufReader::new(f);
@@ -30,12 +44,7 @@ fn main() -> std::io::Result<()> {
     }
     pb.finish();
     
-    for line in reader.lines() {
-        let l = line.as_ref().unwrap();
-        if l.contains(&args.pattern) {
-            println!("{}", l);
-        }
-    }
+    find_matches(reader, &args.pattern, &mut std::io::stdout());
 
     Ok(())
 }
