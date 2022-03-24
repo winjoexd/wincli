@@ -17,13 +17,14 @@ struct Cli {
     verbose: clap_verbosity_flag::Verbosity,
 }
 
-fn find_matches(mut reader: BufReader<File>, pattern: &str, mut writer: impl std::io::Write) {
+fn find_matches(mut reader: BufReader<File>, pattern: &str, mut writer: impl std::io::Write) -> std::io::Result<()> {
     for line in reader.lines() {
         let l = line.as_ref().unwrap();
         if l.contains(&pattern) {
-            writeln!(writer, "{}", l);
+            writeln!(writer, "{}", l)?;
         }
     }
+    Ok(())
 }
 
 #[test]
