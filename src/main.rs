@@ -26,6 +26,16 @@ fn find_matches(mut reader: BufReader<File>, pattern: &str, mut writer: impl std
     }
 }
 
+#[test]
+fn find_a_match() -> std::io::Result<()> {
+    let mut result = Vec::new();
+    let f = File::open("test_find_a_match.txt")?;
+    let reader = BufReader::new(f);
+    find_matches(reader, "lorem", &mut result);
+    assert_eq!(result, b"lorem ipsum\n");
+    Ok(())
+}
+
 fn main() -> std::io::Result<()> {
     env_logger::init();
 
@@ -39,7 +49,7 @@ fn main() -> std::io::Result<()> {
 
     let pb = indicatif::ProgressBar::new(100);
     for i in 0..100 {
-        thread::sleep(time::Duration::from_millis(50));
+        thread::sleep(time::Duration::from_millis(30));
         pb.inc(1);
     }
     pb.finish();
