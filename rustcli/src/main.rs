@@ -1,12 +1,12 @@
 #![allow(unused)]
 
 use clap::Parser;
+use indicatif::ProgressBar;
+use log::{debug, info, warn};
+use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
-use std::fs::File;
-use indicatif::ProgressBar;
 use std::{thread, time};
-use log::{info, warn, debug};
 
 #[derive(Debug, Parser)]
 struct Cli {
@@ -17,7 +17,11 @@ struct Cli {
     verbose: clap_verbosity_flag::Verbosity,
 }
 
-fn find_matches(mut reader: BufReader<File>, pattern: &str, mut writer: impl std::io::Write) -> std::io::Result<()> {
+fn find_matches(
+    mut reader: BufReader<File>,
+    pattern: &str,
+    mut writer: impl std::io::Write,
+) -> std::io::Result<()> {
     for line in reader.lines() {
         let l = line.as_ref().unwrap();
         if l.contains(&pattern) {
@@ -41,7 +45,7 @@ fn main() -> std::io::Result<()> {
     env_logger::init();
 
     let args = Cli::parse();
-   
+
     info!("pattern = {}", args.pattern);
     info!("path = {:?}", args.path);
 
@@ -54,7 +58,7 @@ fn main() -> std::io::Result<()> {
         pb.inc(1);
     }
     pb.finish();
-    
+
     find_matches(reader, &args.pattern, &mut std::io::stdout());
 
     Ok(())
