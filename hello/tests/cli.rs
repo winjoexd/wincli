@@ -1,9 +1,8 @@
-use std::process::Command;
+use assert_cmd::Command;
 
 #[test]
 fn runs(){
-    let mut cmd = Command::new("ls");
-    let res = cmd.output();
+    let mut cmd = Command::cargo_bin("hello").unwrap();
 
-    assert!(res.is_ok());
+    cmd.assert().success();
 }
