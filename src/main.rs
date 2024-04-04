@@ -18,14 +18,18 @@ fn main() {
             // everything after the first whitespace character is interpreted as args to the command
             let mut parts = command.trim().split_whitespace();
             let command = parts.next().unwrap_or("");
-            // let args = parts;
+            let args = parts;
+
+            println!("{:?}", args);
 
             match command {
                 "hello" => {
                     crate::cmds::hello::cmd_hello();
                 }
-                "exit" => return,
-                "quit" => return,
+                "exit" | "quit" => {
+                    println!("exit...");
+                    return;
+                }
                 _ => {}
             }
         }
