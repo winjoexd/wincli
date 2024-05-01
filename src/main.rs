@@ -30,6 +30,9 @@ fn main() {
                     println!("exit...");
                     return;
                 }
+                "help" => {
+                    crate::cmds::help::cmd_help();
+                }
                 _ => {}
             }
         }
