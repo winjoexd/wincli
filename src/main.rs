@@ -3,7 +3,7 @@ use std::io::{stdin, stdout, Write};
 mod cmds;
 
 fn main() {
-    let debug_mode: bool = false;
+    let mut debug_mode: bool = false;
 
     loop {
         print!("WIN> ");
@@ -33,6 +33,10 @@ fn main() {
                 "exit" | "quit" => {
                     println!("exit...");
                     return;
+                }
+                "debug" => {
+                    debug_mode = !debug_mode;
+                    println!("debug mode: {}", debug_mode);
                 }
                 "help" => {
                     crate::cmds::help::cmd_help();
