@@ -3,6 +3,8 @@ use std::io::{stdin, stdout, Write};
 mod cmds;
 
 fn main() {
+    let debug_mode: bool = false;
+
     loop {
         print!("WIN> ");
         stdout().flush().unwrap();
@@ -20,7 +22,9 @@ fn main() {
             let command = parts.next().unwrap_or("");
             let args = parts;
 
-            println!("{:?}", args);
+            if debug_mode {
+                println!("{:?}", args);
+            }
 
             match command {
                 "hello" => {
