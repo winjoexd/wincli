@@ -16,14 +16,14 @@ fn main() {
         // this needs to be peekable so we can determine when we are on the last command
         let mut commands = input.trim().split(" | ").peekable();
 
-        while let Some(command) = commands.next() {
-            // everything after the first whitespace character is interpreted as args to the command
-            let mut parts = command.trim().split_whitespace();
+        while let Some(full_cmd) = commands.next() {
+            // everything after the first whitespace character is interpreted as the single param string
+            let mut parts = full_cmd.trim().split_whitespace();
             let command = parts.next().unwrap_or("");
-            let args = parts;
+            let param = full_cmd.trim().splitn(2, char::is_whitespace).nth(1).unwrap_or("").to_string();
 
             if debug_mode {
-                println!("{:?}", args);
+                println!("{:?}", param);
             }
 
             match command {
@@ -40,6 +40,9 @@ fn main() {
                 }
                 "help" => {
                     crate::cmds::help::cmd_help();
+                }
+                "param" => {
+                    crate::cmds::param::cmd_param(param);
                 }
                 _ => {}
             }
